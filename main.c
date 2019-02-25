@@ -22,12 +22,14 @@ SDL_Surface* tmp=NULL;
 SDL_Event event={0};
 int main()
 {
+int run=0;
 int menu=1;
 int now=0;
 int ex=0;
-int pfps=10;
+int pfps=5;
 int dt=0;
 int etat=4;
+int settingg;
 float pfpss=0;
 SDL_Init(SDL_INIT_VIDEO);
 const SDL_VideoInfo *pinfo=SDL_GetVideoInfo();
@@ -39,6 +41,8 @@ play=IMG_Load("ress/aa.png");
 setting=IMG_Load("ress/set.png");
 leave=IMG_Load("ress/leave.png");
 Hplay=IMG_Load("ress/aasel.png");
+SDL_SetColorKey( Hplay , SDL_SRCCOLORKEY, SDL_MapRGB( Hplay->format, 0, 0, 0) );
+
 Hset=IMG_Load("ress/setsel.png");
 Hleave=IMG_Load("ress/leavesel.png");
 screen=SDL_SetVideoMode(LARGEUR,HAUTEUR,bpp,SDL_HWSURFACE);
@@ -64,6 +68,8 @@ if(etat==1)
 SDL_BlitSurface(Hleave,NULL,screen,&leaverect);
 if(etat==0)
 etat=4;
+if(etat==5)
+etat=1;
 SDL_PollEvent(&event);
 switch(event.type)
 {case SDL_QUIT:
@@ -82,6 +88,7 @@ SDL_Delay(100);
 
   {
 etat++;
+SDL_Delay(100);
   }
 break;
 case SDL_MOUSEMOTION:
@@ -107,15 +114,21 @@ etat=1;
 
 
 }
-  
+
 break;
 case SDL_MOUSEBUTTONDOWN:
 if( event.button.button == SDL_BUTTON_LEFT )
 		{if(94<event.button.x&&event.button.x<284)
-{if(596<event.motion.y&&event.motion.y<652)
+{if(596<event.button.y&&event.button.y<652)
 {
 menu=0;
-}
+}else if(448<event.button.y&&event.button.y<506)
+{
+menu=0;
+run=1;}else if(518<event.button.y&&event.button.y<574)
+{
+menu=0;
+settingg=1;}
 }
 }
 break;
@@ -126,8 +139,7 @@ break;
 
 SDL_Flip(screen);
 ex=now;
-}
-else 
+}else
  SDL_Delay(pfps-dt);
 }
 SDL_FreeSurface(play);
@@ -139,3 +151,4 @@ SDL_FreeSurface(Hleave);
 SDL_Quit();
 return 0;
 }
+
