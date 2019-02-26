@@ -90,6 +90,15 @@ SDL_Delay(100);
 etat++;
 SDL_Delay(100);
   }
+
+ if(event.key.keysym.sym==SDLK_RETURN)
+
+  {	if(etat==1){menu=0;}
+if(etat==2){settingg=1;menu=0;}
+if(etat==3){run=1,menu=0;}
+
+
+}
 break;
 case SDL_MOUSEMOTION:
 if(94<event.motion.x&&event.motion.x<284)
