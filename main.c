@@ -16,7 +16,7 @@ freesur(&act);
 loadimg(&act);
 int now=0;
 int ex=0;
-int pfps=2;
+int pfps=1;
 int dt=0;
 float pfpss=0;
 SDL_Init(SDL_INIT_VIDEO);
