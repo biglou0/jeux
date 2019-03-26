@@ -20,12 +20,14 @@ int pfps=1;
 int dt=0;
 float pfpss=0;
 SDL_Init(SDL_INIT_VIDEO);
-
+const SDL_VideoInfo *pinfo=SDL_GetVideoInfo();
+int bpp=pinfo->vfmt->BitsPerPixel;
+act.screen=SDL_SetVideoMode(LARGEUR,HAUTEUR,bpp,SDL_HWSURFACE);
 while (act.game){
-while(act.menu)
-{
 now=SDL_GetTicks();
 dt=now-ex;
+while(act.menu)
+{
 if(dt>=pfps)
 {
 //update
@@ -38,8 +40,6 @@ ex=now;
 }
 
 while(act.settingg){
-now=SDL_GetTicks();
-dt=now-ex;
 if(dt>=pfps)
 {
 fsettings(&act);
@@ -48,11 +48,21 @@ fsettings(&act);
  SDL_Delay(pfps-dt);
 }
 
+
+
+while(act.run){
+if(dt>=pfps)
+{
+backgroundandscrolling(&act);
+
+}else
+ SDL_Delay(pfps-dt);
+}
+
+
 }
 
 freesur(&act);
-
-
 SDL_Quit();
 return 0;
 }

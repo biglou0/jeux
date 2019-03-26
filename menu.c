@@ -4,6 +4,9 @@
 #include <SDL/SDL_image.h>
 #include "menu.h"
 void loadimg(var * act){
+act->gamebackglvl1=IMG_Load("ress/gamebackg.png");
+act->gamebackglvl2=IMG_Load("ress/gamebackglvl2.png");
+act->gamebackglvl3=IMG_Load("ress/gamebackglvl3.png");
 act->backg=SDL_LoadBMP("ress/def.bmp");
 act->play=IMG_Load("ress/aa.png");
 act->setting=IMG_Load("ress/set.png");
@@ -12,8 +15,10 @@ act->Hplay=IMG_Load("ress/aasel.png");
 act->Hset=IMG_Load("ress/setsel.png");
 act->Hleave=IMG_Load("ress/leavesel.png");
 SDL_GetClipRect(act->backg,& act->backgrect);
-act->screen=SDL_SetVideoMode(LARGEUR,HAUTEUR,32,SDL_HWSURFACE);
-SDL_WM_SetCaption("Menu",NULL);}
+SDL_WM_SetCaption("Fairy Tail",NULL);}
+
+
+
 void blit(var * act ){
 SDL_BlitSurface(act->backg,NULL,act->screen,& act->backgrect);
 if(act->etat==3){
@@ -39,6 +44,12 @@ if(act->etat==5)
 act->etat=1;
 SDL_Flip(act->screen);
 }
+
+
+
+
+
+
 void freesur(var * act ){
 SDL_FreeSurface(act->play);
 SDL_FreeSurface(act->setting);
@@ -52,7 +63,11 @@ SDL_FreeSurface(act->backb);
 SDL_FreeSurface(act->flowb);
 SDL_FreeSurface(act->on);
 SDL_FreeSurface(act->off);
+
 }
+
+
+
 
 void action(var * act ){
 SDL_PollEvent(&act->event);
@@ -130,7 +145,19 @@ act->settingg=1;}
 }
 break;
 }}
+
+
+
+
+
+
+
 void initialisation(var *act ){
+act->level=1;
+act->camera.x=0;
+act->camera.y=0;
+act->camera.w=1300;
+act->camera.h=705;
 act->screen=NULL;
 act->screenrect.x=0;
 act->screenrect.y=0;
@@ -143,17 +170,17 @@ act->backgrect.w=0;
 act->backgrect.h=0;
 act->play=NULL;
 act->playrect.x=74;
-act->playrect.y=400;
+act->playrect.y=450;
 act->playrect.w=230;
 act->playrect.h=58;
 act->setting=NULL;
 act->settingrect.x=74;
-act->settingrect.y=480;
+act->settingrect.y=530;
 act->settingrect.w=230;
 act->settingrect.h=58;
 act->leave=NULL;
 act->leaverect.x=74;
-act->leaverect.y=560;
+act->leaverect.y=610;
 act->leaverect.w=230;
 act->leaverect.h=58;
 act->Hplay=NULL;
@@ -195,6 +222,11 @@ act->game=1;
 act->settingg=0;
 }
 
+
+
+
+
+
 void fsettings(var * act){
 act->menuu=IMG_Load("ress/menu.png");
 act->backb=IMG_Load("ress/back.png");
@@ -220,7 +252,13 @@ SDL_PollEvent(&act->event);
 switch(act->event.type)
 {case SDL_QUIT:
 act->settingg=0;
-act->game=0;
+act->menu=1;
+break;
+case SDL_KEYDOWN:
+ if(act->event.key.keysym.sym==SDLK_ESCAPE){
+act->settingg=0;
+act->menu=1;
+SDL_Delay(200);}
 break;
 case SDL_MOUSEBUTTONDOWN:
 if( act->event.button.button == SDL_BUTTON_LEFT )
@@ -247,3 +285,47 @@ if(act->shadow==2){act->shadow=0;}
 }
 break;
 }}
+
+
+
+
+void backgroundandscrolling(var * act){
+
+SDL_PollEvent(&act->event);
+switch(act->event.type)
+{
+case SDL_QUIT:
+{
+act->game=0;
+ act->run=0;
+  }
+break;
+case SDL_KEYDOWN:
+ if(act->event.key.keysym.sym==SDLK_RIGHT){
+act->camera.x+=10;}
+ if(act->event.key.keysym.sym==SDLK_LEFT){
+if(act->camera.x!=0){
+act->camera.x-=10;}}
+}
+if(act->camera.x>=6600){
+act->level++;
+SDL_Delay(200);
+act->camera.x=0;
+}
+switch(act->level)
+{
+case 1:
+SDL_BlitSurface(act->gamebackglvl1,&act->camera,act->screen,NULL);
+break ;
+case 2:
+SDL_BlitSurface(act->gamebackglvl2,&act->camera,act->screen,NULL);
+break ;
+case 3:
+SDL_BlitSurface(act->gamebackglvl3,&act->camera,act->screen,NULL);
+break ;
+}
+SDL_Flip(act->screen);
+}
+
+
+
