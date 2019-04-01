@@ -25,6 +25,7 @@ int bpp=pinfo->vfmt->BitsPerPixel;
 act.screen=SDL_SetVideoMode(LARGEUR,HAUTEUR,bpp,SDL_HWSURFACE);
 while (act.game){
 now=SDL_GetTicks();
+act.time=SDL_GetTicks();
 dt=now-ex;
 while(act.menu)
 {
@@ -54,6 +55,7 @@ while(act.run){
 if(dt>=pfps)
 {
 backgroundandscrolling(&act);
+gestiondevieetscore(&act);
 
 }else
  SDL_Delay(pfps-dt);

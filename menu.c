@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "menu.h"
+
 void loadimg(var * act){
 act->gamebackglvl1=IMG_Load("ress/gamebackg.png");
 act->gamebackglvl2=IMG_Load("ress/gamebackglvl2.png");
@@ -154,6 +155,8 @@ break;
 
 void initialisation(var *act ){
 act->level=1;
+act->keys=0;
+act->vie=3;
 act->camera.x=0;
 act->camera.y=0;
 act->camera.w=1300;
@@ -290,7 +293,8 @@ break;
 
 
 void backgroundandscrolling(var * act){
-
+int time;
+act->levelup=IMG_Load("ress/clear.png");
 SDL_PollEvent(&act->event);
 switch(act->event.type)
 {
@@ -323,9 +327,96 @@ break ;
 case 3:
 SDL_BlitSurface(act->gamebackglvl3,&act->camera,act->screen,NULL);
 break ;
-}
+case 4:
+time=act->time/1000;
+if(time<60)
+{
+act->end=IMG_Load("ress/1min.png");
+SDL_BlitSurface(act->end,NULL,act->screen,&act->backgrect);}
+else if(time<120)
+{
+act->end=IMG_Load("ress/2min.png");
+SDL_BlitSurface(act->end,NULL,act->screen,&act->backgrect);}
+else if(time<180)
+{
+act->end=IMG_Load("ress/3min.png");
+SDL_BlitSurface(act->end,NULL,act->screen,&act->backgrect);}
+else 
+{
+act->end=IMG_Load("ress/4min.png");
+SDL_BlitSurface(act->end,NULL,act->screen,&act->backgrect);}
+break;
+} 
 SDL_Flip(act->screen);
 }
 
+void gestiondevieetscore(var * act){
+act->heart=IMG_Load("ress/heart.png");
+act->key=IMG_Load("ress/key.png");
+act->keyon=IMG_Load("ress/keyon.png");
+act->level1.x=1150;
+act->level1.y=30;
+act->level1.w=50;
+act->level1.h=50;
+act->level2.x=1200;
+act->level2.y=30;
+act->level2.w=50;
+act->level2.h=50;
+act->level3.x=1250;
+act->level3.y=30;
+act->level3.w=50;
+act->level3.h=50;
+act->key1.x=1150;
+act->key1.y=80;
+act->key1.w=50;
+act->key1.h=50;
+act->key2.x=1200;
+act->key2.y=80;
+act->key2.w=50;
+act->key2.h=50;
+act->key3.x=1250;
+act->key3.y=80;
+act->key3.w=50;
+act->key3.h=50;
+switch(act->vie){
 
+case 1:
+SDL_BlitSurface(act->heart,NULL,act->screen,&act->level1);
+break;
+case 2:
+SDL_BlitSurface(act->heart,NULL,act->screen,&act->level1);
+SDL_BlitSurface(act->heart,NULL,act->screen,&act->level2);
+break;
+case 3:
+SDL_BlitSurface(act->heart,NULL,act->screen,&act->level1);
+SDL_BlitSurface(act->heart,NULL,act->screen,&act->level2);
+SDL_BlitSurface(act->heart,NULL,act->screen,&act->level3);
+break;
+
+}
+switch(act->keys){
+case 3:
+SDL_BlitSurface(act->key,NULL,act->screen,&act->key1);
+SDL_BlitSurface(act->key,NULL,act->screen,&act->key2);
+SDL_BlitSurface(act->key,NULL,act->screen,&act->key3);
+break;
+case 2:
+SDL_BlitSurface(act->keyon,NULL,act->screen,&act->key1);
+SDL_BlitSurface(act->key,NULL,act->screen,&act->key2);
+SDL_BlitSurface(act->key,NULL,act->screen,&act->key3);
+break;
+case 1:
+SDL_BlitSurface(act->keyon,NULL,act->screen,&act->key1);
+SDL_BlitSurface(act->keyon,NULL,act->screen,&act->key2);
+SDL_BlitSurface(act->key,NULL,act->screen,&act->key3);
+break;
+case 0:
+SDL_BlitSurface(act->keyon,NULL,act->screen,&act->key1);
+SDL_BlitSurface(act->keyon,NULL,act->screen,&act->key2);
+SDL_BlitSurface(act->keyon,NULL,act->screen,&act->key3);
+break;
+
+}
+SDL_Flip(act->screen);
+}
 
