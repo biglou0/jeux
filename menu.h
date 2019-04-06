@@ -1,5 +1,17 @@
 #define LARGEUR 1300
 #define HAUTEUR 705
+
+
+
+typedef struct 
+{
+	int vie; 
+	SDL_Surface *image ;
+	SDL_Rect pos_es;
+
+}ennemi;
+
+
 typedef struct var var;
 struct var {
 SDL_Surface* screen;
@@ -28,21 +40,7 @@ SDL_Surface* off;
 SDL_Rect setm;
 SDL_Rect sets;
 SDL_Rect setshadow;
-SDL_Surface* gamebackglvl1;
-SDL_Surface* gamebackglvl2;
-SDL_Surface* gamebackglvl3;
-SDL_Rect camera;
-SDL_Rect level1;
-SDL_Surface* heart;
-SDL_Rect level2;
-SDL_Rect level3;
-SDL_Rect key1;
-SDL_Surface* key;
-SDL_Surface* keyon;
-SDL_Rect key2;
-SDL_Rect key3;
 SDL_Surface* levelup;
-SDL_Surface* end;
 
 int son;
 int music;
@@ -57,11 +55,26 @@ int vie;
 int keys;
 int time;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void loadimg(var * act);
 void blit(var * act );
-void freesur(var * act );
+void freesur(var * act , ennemi *es );
 void initialisation(var *act );
 void action(var * act );
-void gestiondevieetscore(var * act);
 void fsettings(var * act);
 void backgroundandscrolling(var * act);
+
+

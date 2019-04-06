@@ -5,10 +5,10 @@ CC := gcc
 CFLAGS := -lSDL -lSDL_image
 
 # add header files here
-HDRS :=menu.h
+HDRS :=menu.h backg.h gestion.h scrol.h
 
 # add source files here
-SRCS :=menu.c main.c
+SRCS :=menu.c main.c backg.c gestion.c scrol.c
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)
