@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "backg.h"
+#include <SDL/SDL_ttf.h>
 void initbackground(backg *b ){
 int t;
 b->gamebackglvl1=IMG_Load("ress/gamebackg.png");

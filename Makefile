@@ -2,7 +2,7 @@
 CC := gcc
 
 # set the compiler flags
-CFLAGS := -lSDL -lSDL_image
+CFLAGS := -lSDL -lSDL_image -lSDL_ttf
 
 # add header files here
 HDRS :=menu.h backg.h gestion.h scrol.h

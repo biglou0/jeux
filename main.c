@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 #include "backg.h"
 #include "menu.h"
 #include "gestion.h"
 #include "scrol.h"
+
 
 int main()
 {

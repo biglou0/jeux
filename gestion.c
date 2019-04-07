@@ -2,7 +2,12 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
+#include <string.h>
+
 #include "gestion.h"
+
+
 
 void initgestiondeviescore(gestionn * a) {
 a->heart=IMG_Load("ress/heart.png");
@@ -32,6 +37,10 @@ a->key3.x=1250;
 a->key3.y=80;
 a->key3.w=50;
 a->key3.h=50;
+a->timing.x=20;
+a->timing.y=40;
+a->timing.w=50;
+a->timing.h=50;
 }
 
 
@@ -40,6 +49,21 @@ a->key3.h=50;
 
 
 void gestiondevieetscore(gestionn * a , int vie , int keys ,SDL_Surface* screen){
+char tt[64]="25";
+int t;
+int minute = 0;
+int seconde = 0;
+int timeTemps = 0;
+t=SDL_GetTicks();
+timeTemps = SDL_GetTicks();
+minute = (timeTemps / 1000) / 60;
+seconde = (timeTemps / 1000) % 60;
+sprintf(tt, "TEMPS : %d:%d", minute, seconde);
+	TTF_Init();
+a->fonttexte=TTF_OpenFont("o.ttf",30);
+	SDL_Color couleurtexte = {0,0,0};
+a->chrono=TTF_RenderText_Solid(a->fonttexte,tt,couleurtexte);
+	SDL_BlitSurface(a->chrono, NULL,screen,&a->timing); 
 switch(vie){
 
 case 1:
@@ -80,6 +104,9 @@ break;
 
 }
 SDL_Flip(screen);
+SDL_FreeSurface(a->chrono);
+TTF_CloseFont(a->fonttexte);
+	TTF_Quit();
 }
 void freesurfacesdegestion(gestionn *a){
 SDL_FreeSurface(a->heart);
