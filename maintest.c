@@ -1,12 +1,9 @@
-#include"animation.h"
-#include"scrolling.h"
-#include"collision.h"
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #define WIDTH 1000
 #define HEIGHT 600
-
+#include "jeux.h"
 
 int main ( int argc, char* argv[] )
 {
