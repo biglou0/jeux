@@ -1,12 +1,8 @@
-prog:maintest.o  jeux.o
-	gcc maintest.o jeux.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -g
-maintest.o:maintest.c
-	gcc -c maintest.c -g
-jeux.o:jeux.c
-	gcc -c jeux.c -g
+launchenigme:enigme.o main.o
+	gcc enigme.o main.o -lSDL -lSDL_image -lSDL_ttf -o launchenigme
 
-	
+main.o:main.c
+	gcc -c -lSDL -lSDL_image -lSDL_ttf main.c
 
-
-clean:
-	rm *.o prog
+enigme.o:enigme.c
+	gcc -c -lSDL -lSDL_image -lSDL_ttf enigme.c
