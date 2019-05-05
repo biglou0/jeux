@@ -1,34 +1,16 @@
-# set the compiler
-CC := gcc
-
-# set the compiler flags
-CFLAGS := -lSDL -lSDL_image -lSDL_ttf 
-
-# add header files here
-HDRS :=menu.h backg.h gestion.h scrol.h condition.h save.h
-
-# add source files here
-SRCS :=menu.c main.c backg.c gestion.c scrol.c condition.c save.c
-
-# generate names of object files
-OBJS := $(SRCS:.c=.o)
-
-# name of executable
-EXEC := prog
-
-# default recipe
-all: $(EXEC)
-
-# recipe for building the final executable
-$(EXEC): $(OBJS) $(HDRS) Makefile
-	$(CC) -o $@ $(OBJS) $(CFLAGS)
-
-# recipe for building object files
-#$(OBJS): $(@:.o=.c) $(HDRS) Makefile
-#	$(CC) -o $@ $(@:.o=.c) -c $(CFLAGS)
-
-# recipe to clean the workspace
+prog:main.o perso.o jeu.o background.o text.o
+	gcc main.o perso.o jeu.o background.o text.o -o prog -lSDL -lSDL_image -lSDL_ttf -g
+main.o:main.c
+	gcc -c main.c -g
+jeu.o:jeu.c
+	gcc -c jeu.c -g
+perso.o:perso.c
+	gcc -c perso.c -g
+background.o:background.c
+	gcc -c background.c -g
+text.o:text.c
+	gcc -c text.c -g
 clean:
-	rm -f $(EXEC) $(OBJS)
-
-.PHONY: all clean
+	rm -fr *.o
+mrproper:clean
+	rm -f prog

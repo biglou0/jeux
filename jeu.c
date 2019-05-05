@@ -1,117 +1,113 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
+#include "defs.h"
+#include "background.h"
+#include "perso.h"
 #include "jeu.h"
-void inti(ennemi *e)
+#include "text.h"
+
+int jouer(SDL_Surface * screen)
 {
-e->ennemirect.x=200;
-e->ennemirect.y=500;
-e->ennemii=IMG_Load("ress/t.png");
-}
+	int done = 0;
+	int i=0;
+	Uint32 t_prev, dt=1; 
+	
+	perso pers;
+	Background Backg;
+	Text txt;
+	
+	SDL_Event event;
+	int keysHeld[323] = {0}; // everything will be initialized to false
+	
+	TTF_Font *police = NULL;
 
-void affiche(ennemi *e,SDL_Surface *screen)
-{
+	if(loadpersoImages(&pers) == -1) {
+		printf("Erreuer Chargement Voiture Images\n");
+		return(-1);
 
+	}
 
+	if(loadBackground(&Backg) == -1) {
+		printf("Erreuer Chargement Background Images\n");
+		return(-1);
+	}
+	
+	if(loadFont(&police) == EXIT_FAILURE){
+		printf("Erreuer Chargement Font ttf\n");
+		return(-1);
+	}
 
-SDL_GetClipRect(e->ennemii,&e->ennemirect);
-SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);
+	initBackground(&Backg);
+	initperso(&pers);
+	initText(&txt);
 
-}
-
-
-int deplacement(ennemi *e)
-{  int direction=0;
-   int min=100;
-  int max=200;
-
-
-  
-   if(direction==0)
-
-   {
-    while(e->ennemirect.x>min)
-     
-       {
-       e->ennemirect.x--;
-       direction=1;
-      return direction;
-       }  
-   }
-  else
-     if(direction==1)
- 
-   {
-    while(e->ennemirect.x<max)
-      {
-      e->ennemirect.x++;
-      return direction;
-      }
-  }
-
-}
+	// program Game loop
+	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL);
 
 
-void animation(ennemi *e, int direction,SDL_Surface *screen)
-{  
+	while(!done) {
+		t_prev=SDL_GetTicks();
+		while (SDL_PollEvent(&event)) {
+			// check for messages
+			switch (event.type) {
+				// exit if the window is closed
+			case SDL_QUIT:
+				done = 1;
+				break;
+			case SDL_KEYDOWN:
+				pers.moving=1; //lets move
+				keysHeld[event.key.keysym.sym] = 1;
+				break;
+			case SDL_KEYUP:
+				keysHeld[event.key.keysym.sym] = 0;
+				pers.moving=0;
+				pers.velocity=0;
+				break;
+			}
+			// exit if ESCAPE is pressed
+			if (keysHeld[SDLK_ESCAPE])
+				done = 1;
+			if(keysHeld[SDLK_SPACE]) {
+				pers.velocity=5;
+				pers.direction=0; //right direction
+				pers.acceleration+=0.005;
+				//moveVoiture(&car,&Backg,dt);
+				i++;}
+			else
+			{if(pers.acceleration>0)
+			pers.acceleration-=0.001;
+			
+			}
+			if(keysHeld[SDLK_CLEAR]) {
+			pers.acceleration-=0.001;
+			
+			}
+			moveperso(&pers,&Backg,dt);
+		} // end of message processing
+		i=i%4;
+		//Blit the bachground to the backbuffer
+		blitBackground(&Backg,screen);
 
-  
-  
-   if(direction==0)
+		//Blit Voiture to screen
+		if(!pers.moving)
+			i=0;
+		if(pers.direction == 0)
+			SDL_BlitSurface(pers.image[i],NULL,screen,&pers.position);
+			
+		displayText(police,&txt,screen,pers,Backg,0);
+		
+		SDL_Flip(screen);
+		dt=SDL_GetTicks()-t_prev;
+		if((1000/FPS)>dt)
+		SDL_Delay(1000/FPS-dt);
+		
+	}
 
-   {
-    
-    //img:1;
-    e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);  
+	                // free loaded bitmap
 
-
-      //img:1;
-     e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);  
-
-
-        //img:3;
-     e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);  
-
-   //img:4;
-     e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);  
-     
- 
-   }
-else
-  if(direction==1)
- 
-   {
-   
-    //img:1;
-    e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);  
-
-
-      //img:1;
-     e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);  
-
-
-        //img:3;
-     e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect);  
-
-   //img:4;
-     e->ennemii=IMG_Load("ress/t.png");
-    SDL_GetClipRect(e->ennemii,&e->ennemirect);
-    SDL_BlitSurface(e->ennemii,NULL,screen,&e->ennemirect); 
-   }
-
+	freeperso(&pers);
+	freeBackground(&Backg);
+	TTF_CloseFont(police);
+	return(0);
 }
