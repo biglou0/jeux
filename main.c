@@ -1,104 +1,74 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <SDL/SDL.h>
+#include "SDL/SDL.h"
 #include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
-//#include <SDL/SDL_mixer.h>
-#include "backg.h"
-#include "menu.h"
-#include "gestion.h"
-#include "scrol.h"
-#include "condition.h"
-#include "save.h"
+#include <SDL/SDL_mixer.h>
+#include<SDL/SDL_ttf.h>
+#include"partage.h"
+int main() {
 
-int main()
+
+SDL_Surface *screen=NULL,*player1,*player2,*background1,*background2;
+SDL_Rect posback1,posback2,posplayer1,posplayer2;
+SDL_Event event;
+  int game =1,directionSDL1,directionSDL2;
+  background1=IMG_Load("background1.png");
+  background2=IMG_Load("background2.png");
+  player1=IMG_Load("player1.png");
+  player2=IMG_Load("player2.png");
+  SDL_Init( SDL_INIT_EVERYTHING );
+  screen = SDL_SetVideoMode(1200, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+initposition(&posback1,&posback2,&posplayer1,&posplayer2);
+//initimage(background1,background2 ,player1,player2);
+SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL);
+
+while (game)
 {
+  //input from SDL
+  while(SDL_PollEvent(&event)){
+        switch (event.type)
+        {
+        // exit if the window is closed
+        case SDL_QUIT:
+            game = 0;
+            break;
+        case SDL_KEYDOWN:
+        {
 
-var act;//declaration
-ennemi e;
-backg b;
-initialisation(&act);
-loadimg(&act);
-gestionn a;
-scr s;
-condition f;
-//
-saved sa;
-int now=0;
-int ex=0;
-int pfps=1;
-int dt=0;
-int vie=2,keys=3;
-int time;
-float pfpss=0;
-int off=1;
-SDL_Init(SDL_INIT_VIDEO);
-const SDL_VideoInfo *pinfo=SDL_GetVideoInfo();
-int bpp=pinfo->vfmt->BitsPerPixel;
-act.screen=SDL_SetVideoMode(LARGEUR,HAUTEUR,bpp,SDL_HWSURFACE);
+            if (event.key.keysym.sym == SDLK_d)//perso 1
+              directionSDL1 = 1;
 
-initbackground(&b);
-initgestiondeviescore(&a);
-initscrol(&s);
- initcond(&f);
-initsave(&sa);
+            if (event.key.keysym.sym == SDLK_q)//perso 1
+              directionSDL1 = 2;
+          if (event.key.keysym.sym == SDLK_m)//perso 2
+          directionSDL2 = 1;
+          if (event.key.keysym.sym == SDLK_l)//perso 2
+          directionSDL2 = 2;
+        }break;
+        break;
+        case SDL_KEYUP:
+          directionSDL1=0;
+          directionSDL2=0;
+        break;
 
-load(&sa);
-s.level=sa.level;
-keys=sa.keys;
-vie=sa.vie;
-s.camera.x=sa.camx;
-s.persorect.x=sa.persox;
-s.persorect.y=sa.persoy;
-while (act.game){
-now=SDL_GetTicks();
-act.time=SDL_GetTicks();
-dt=now-ex;
-while(act.menu)
-{
-if(dt>=pfps)
-{
+      }}
+movementplayer(&directionSDL1,&directionSDL2,&posplayer1,&posplayer2);
 
-action(&act);
-blit(&act);
 
-ex=now;
-}else
- SDL_Delay(pfps-dt);
-}
-
-while(act.settingg){
-if(dt>=pfps)
-{
-fsettings(&act);
-
-}else
- SDL_Delay(pfps-dt);
+SDL_BlitSurface(background1,NULL,screen,&posback1);
+SDL_BlitSurface(background2,NULL,screen,&posback2);
+SDL_BlitSurface(player1,NULL,screen,&posplayer1);
+SDL_BlitSurface(player2,NULL,screen,&posplayer2);
+SDL_Flip(screen);
 }
 
 
 
-while(act.run){
-if(dt>=pfps)
-{
-SDL_PollEvent(&s.ev);
-cond(s.level , &f,vie,act.screen);
-scrolling(&s , &act.game, &act.run,act.screen,b.gamebackglvl1,b.gamebackglvl2,b.gamebackglvl3);
-time=gestiondevieetscore(&a,vie,keys,act.screen,sa.temp);
-affichebackground(s.level,act.time,act.screen,&s.camera,&b);
-save(s.level,vie,keys,s.ev,act.screen,&sa,time,s.persorect.x,s.persorect.y,s.camera.x);
-}else
- SDL_Delay(pfps-dt);
-}
+
+
+SDL_FreeSurface(background1);
+SDL_FreeSurface(background2);
+SDL_FreeSurface(player1);
+SDL_FreeSurface(player2);
 
 
 }
-SDL_Flip(act.screen);
-freesur(&act,&e);
-freesurfaces(&b);
-freesurfacesdegestion(&a);
-
-SDL_Quit();
-return 0;
-}
-
