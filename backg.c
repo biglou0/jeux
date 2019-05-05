@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+//#include <SDL/SDL_mixer.h>
 #include "backg.h"
 #include <SDL/SDL_ttf.h>
 void initbackground(backg *b ){
@@ -17,10 +18,12 @@ b->backgr.x=0;
 b->backgr.y=0;
 b->backgr.w=1300;
 b->backgr.h=705;
+//b->music = Mix_LoadMUS("music.mp3");
 }
 
 void affichebackground(int level ,int time ,SDL_Surface* screen, SDL_Rect * camera, backg *b){
 int t;
+//Mix_PlayMusic(b->music,-1);
 switch(level)
 {
 case 1:
@@ -32,25 +35,6 @@ break ;
 case 3:
 SDL_BlitSurface(b->gamebackglvl3,camera,screen,NULL);
 break ;
-case 4:
-t=time/1000;
-if(t<60)
-{
-SDL_BlitSurface(b->end1,NULL,screen,&b->backgr);
-}
-else if(t<120)
-{
-SDL_BlitSurface(b->end2,NULL,screen,&b->backgr);
-}
-else if(t<180)
-{
-SDL_BlitSurface(b->end3,NULL,screen,&b->backgr);
-}
-else 
-{
-SDL_BlitSurface(b->end4,NULL,screen,&b->backgr);
-}
-break;
 } } 
 void freesurfaces(backg *b){
 SDL_FreeSurface(b->gamebackglvl1);
@@ -59,7 +43,9 @@ SDL_FreeSurface(b->gamebackglvl3);
 SDL_FreeSurface(b->end1);
 SDL_FreeSurface(b->end2);
 SDL_FreeSurface(b->end3);
-SDL_FreeSurface(b->end4);}
+SDL_FreeSurface(b->end4);
+//Mix_FreeMusic(b->music);
+}
 
 
 

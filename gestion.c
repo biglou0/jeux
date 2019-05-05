@@ -48,16 +48,20 @@ a->timing.h=50;
 
 
 
-void gestiondevieetscore(gestionn * a , int vie , int keys ,SDL_Surface* screen){
+int gestiondevieetscore(gestionn * a , int vie , int keys ,SDL_Surface* screen,int ex){
 char tt[64]="25";
 int t;
 int minute = 0;
 int seconde = 0;
-int timeTemps = 0;
-t=SDL_GetTicks();
+int timeTemps;
+if(ex!=0){
 timeTemps = SDL_GetTicks();
+minute = ((timeTemps+ex) / 1000) / 60;
+seconde = ((timeTemps+ex) / 1000) % 60;}
+if(ex==0){timeTemps = SDL_GetTicks();
 minute = (timeTemps / 1000) / 60;
-seconde = (timeTemps / 1000) % 60;
+seconde = (timeTemps / 1000) % 60;}
+
 sprintf(tt, "TEMPS : %d:%d", minute, seconde);
 	TTF_Init();
 a->fonttexte=TTF_OpenFont("o.ttf",30);
@@ -107,6 +111,7 @@ SDL_Flip(screen);
 SDL_FreeSurface(a->chrono);
 TTF_CloseFont(a->fonttexte);
 	TTF_Quit();
+return timeTemps;
 }
 void freesurfacesdegestion(gestionn *a){
 SDL_FreeSurface(a->heart);

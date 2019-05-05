@@ -17,5 +17,5 @@ SDL_Color couleurtexte , couleur ;
 
 
 void initgestiondeviescore(gestionn * a);
-void gestiondevieetscore(gestionn * a , int vie , int keys ,SDL_Surface* screen);
+int gestiondevieetscore(gestionn * a , int vie , int keys ,SDL_Surface* screen,int ex);
 void freesurfacesdegestion(gestionn *a);

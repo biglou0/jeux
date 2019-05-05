@@ -2,13 +2,13 @@
 CC := gcc
 
 # set the compiler flags
-CFLAGS := -lSDL -lSDL_image -lSDL_ttf
+CFLAGS := -lSDL -lSDL_image -lSDL_ttf 
 
 # add header files here
-HDRS :=menu.h backg.h gestion.h scrol.h
+HDRS :=menu.h backg.h gestion.h scrol.h condition.h save.h
 
 # add source files here
-SRCS :=menu.c main.c backg.c gestion.c scrol.c
+SRCS :=menu.c main.c backg.c gestion.c scrol.c condition.c save.c
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)
