@@ -12,7 +12,17 @@ void affichage(enigme *E ,int val)
 int reponse=-1;
 srand ( time(NULL) );
 int random =1;
-random= rand() %3+1;
+int a=0,b=0,c=0,d=0;
+char eng[50];
+random= rand() %2+1;
+a=rand() %50+1;
+b=rand() %90+1;
+c=a*b;
+if(random==1){
+sprintf(eng, "%dx%d=%d ?",b, a , c);
+}
+else if(random==2){
+sprintf(eng, "%dx%d=%d ?",b, a , c+1);}
 //declaration
 	SDL_Surface *yes;
 	SDL_Surface *no;
@@ -90,38 +100,24 @@ reponse=0;
 }
 break;}
 //generation&affichage
-if(random==1){
-question=TTF_RenderText_Shaded(fonttexte,"14/2=6?",couleurtexte,couleur);}
-else if(random==2){
-question=TTF_RenderText_Shaded(fonttexte,"14/2=7?",couleurtexte,couleur);}
-else if(random==3){
-question=TTF_RenderText_Shaded(fonttexte,"244/2=122?",couleurtexte,couleur);}
+question=TTF_RenderText_Solid(fonttexte,eng,couleurtexte);
 	SDL_BlitSurface(question, NULL,screen,&posquestion); 
 if(random==1){
 
 if(reponse==0){
-	SDL_BlitSurface(yes, NULL,screen,&rzlt);
+	SDL_BlitSurface(no, NULL,screen,&rzlt);
 }
 if(reponse==1){
-	SDL_BlitSurface(no, NULL,screen,&rzlt);
+	SDL_BlitSurface(yes, NULL,screen,&rzlt);
 }
 }
 if(random==2){
 
 if(reponse==0){
-	SDL_BlitSurface(no, NULL,screen,&rzlt);
-}
-if(reponse==1){
 	SDL_BlitSurface(yes, NULL,screen,&rzlt);
 }
-}
-if(random==3){
-
-if(reponse==0){
-	SDL_BlitSurface(no, NULL,screen,&rzlt);
-}
 if(reponse==1){
-	SDL_BlitSurface(yes, NULL,screen,&rzlt);
+	SDL_BlitSurface(no, NULL,screen,&rzlt);
 }
 }
 SDL_Flip(screen);
