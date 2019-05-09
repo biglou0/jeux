@@ -1,8 +1,6 @@
-launchenigme:enigme.o main.o
-	gcc enigme.o main.o -lSDL -lSDL_image -lSDL_ttf -o launchenigme
-
+Prog:partage.o main.o
+	gcc partage.o main.o -o prog -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
 main.o:main.c
-	gcc -c -lSDL -lSDL_image -lSDL_ttf main.c
-
-enigme.o:enigme.c
-	gcc -c -lSDL -lSDL_image -lSDL_ttf enigme.c
+	gcc -c main.c -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
+partage.o:partage.c
+	gcc -c partage.c -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
